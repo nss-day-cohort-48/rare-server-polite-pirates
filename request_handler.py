@@ -57,7 +57,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         parsed = self.parse_url(self.path)
 
         if len(parsed) == 2:
-            ( resource, id ) = parsed
+            (resource, id) = parsed
             if resource == "posts":
                 if id is not None:
                     response = f"{get_made_up_function_single(id)}"
