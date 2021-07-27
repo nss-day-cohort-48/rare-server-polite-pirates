@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from posts.request import get_all_posts, create_post
+from posts.request import get_all_posts, delete_post, create_post
 from users import get_all_users, create_user
 
 
@@ -103,8 +103,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url(self.path)
 
-        # if resource == "madeUpList":
-        #     delete_made_up_function(id)
+        if resource == "posts":
+            delete_post(id)
 
         # elif resource == "madeUpList2":
         #     delete_made_up_function2(id)
