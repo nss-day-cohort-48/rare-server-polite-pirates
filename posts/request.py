@@ -1,38 +1,6 @@
 import sqlite3
 import json
-
-POSTS = [
-    {
-      "id": 1,
-      "user_id": 1,
-      "category_id": 1,
-      "title": "The best post ever",
-      "publication_date": "27/7/2021",
-      "image_url": "empty for now",
-      "content": "this is a sample posts",
-      "approved": 0
-    },
-    {
-      "id": 1,
-      "user_id": 1,
-      "category_id": 1,
-      "title": "The best post ever",
-      "publication_date": "27/7/2021",
-      "image_url": "empty for now",
-      "content": "this is a sample posts",
-      "approved": 0
-    },
-    {
-      "id": 1,
-      "user_id": 1,
-      "category_id": 1,
-      "title": "The best post ever",
-      "publication_date": "27/7/2021",
-      "image_url": "empty for now",
-      "content": "this is a sample posts",
-      "approved": 0
-    }
-]
+from models import Post
 
 
 def get_all_posts():
@@ -50,8 +18,8 @@ def get_all_posts():
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved,
-        FROM Post p
+            p.approved
+        FROM Posts p
         """)
 
         posts = []
@@ -61,7 +29,7 @@ def get_all_posts():
         for row in dataset:
 
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'],
-                            row['image_url',row['content'], row['approved']])
+                            row['image_url'] ,row['content'], row['approved'])
 
             posts.append(post.__dict__)
 
