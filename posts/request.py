@@ -34,3 +34,7 @@ def get_all_posts():
             posts.append(post.__dict__)
 
         return json.dumps(posts)
+
+# def create_post(new_post):
+#     with sqlite3.connect("./rare") as conn:
+#         db_cursor = conn.cursor()
