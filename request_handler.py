@@ -1,5 +1,7 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from users import create_user
+
 
 class HandleRequests(BaseHTTPRequestHandler):
     '''note that is needed'''
@@ -10,13 +12,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if "?" in resource:
 
-            param = resource.split("?")[1]  
-            resource = resource.split("?")[0]  
-            pair = param.split("=") 
-            key = pair[0]  
-            value = pair[1] 
+            param = resource.split("?")[1]
+            resource = resource.split("?")[0]
+            pair = param.split("=")
+            key = pair[0]
+            value = pair[1]
 
-            return ( resource, key, value )
+            return (resource, key, value)
 
         else:
             id = None
@@ -24,9 +26,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             try:
                 id = int(path_params[2])
             except IndexError:
-                pass  
+                pass
             except ValueError:
-                pass  
+                pass
 
             return (resource, id)
 
@@ -54,7 +56,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         parsed = self.parse_url(self.path)
 
         if len(parsed) == 2:
-            ( resource, id ) = parsed
+            (resource, id) = parsed
             # if resource == "madeUpList":
             #     if id is not None:
             #
@@ -90,12 +92,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         new_item = None
 
-        # if resource_from_url == "madeUpList":
-        #     new_item = create_made_up_function(post_body)
+        if resource_from_url == "register":
+            new_item = create_user(post_body)
 
         # elif resource_from_url == "madeUpList2":
         #     new_item = create_made_up_function(post_body)
-        # self.wfile.write(f"{new_item}".encode())
+        self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
         '''Delete method'''
@@ -110,7 +112,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         #     delete_made_up_function2(id)
 
         self.wfile.write("".encode())
-
 
     def do_PUT(self):
         content_len = int(self.headers.get('content-length', 0))
