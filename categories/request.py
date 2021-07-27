@@ -38,10 +38,7 @@ def create_category(new_category):
         VALUES
             ( ? );
         """,
-            (
-                new_category["label"]
-            ),
-        )
+            ( new_category["label"], ))
 
         id = db_cursor.lastrowid
 
@@ -67,7 +64,7 @@ def update_category(id, new_category):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-        UPDATE category
+        UPDATE Categories
             SET
                 label = ?
         WHERE id = ?

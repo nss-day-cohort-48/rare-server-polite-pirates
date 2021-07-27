@@ -94,10 +94,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource_from_url == "register":
             new_item = create_user(post_body)
-
-        elif resource_from_url == "posts":
-            new_item = create_post(post_body)
-
+        elif resource_from_url == "categories":
+            new_item = create_category(post_body)
+            
         self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
