@@ -1,1 +1,1 @@
-from .request import get_all_posts
+from .request import get_all_posts, delete_post
