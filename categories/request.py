@@ -1,8 +1,8 @@
 import sqlite3
 import json
-from models import Users
+from models import Categories
 
-def get_all_users():
+def get_all_categories():
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -12,48 +12,39 @@ def get_all_users():
             c.id,
             c.label
             
-        FROM Categorie c
+        FROM Categories c
         """)
 
-        users = []
+        categories = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            user = Users(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
-            users.append(user.__dict__)
+            category = Categories(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+            categories.append(category.__dict__)
 
-    return json.dumps(users)
+    return json.dumps(categories)
 
 
 
-def create_user(new_user):
-    """Creating user in SQL"""
+def create_category(new_category):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute(
             """
-        INSERT INTO Users
-            ( first_name, last_name, email, bio, username, password, profile_image_url, created_on, active )
+        INSERT INTO Categories
+            ( label )
         VALUES
-            ( ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            ( ? );
         """,
             (
-                new_user["first_name"],
-                new_user["last_name"],
-                new_user["email"],
-                new_user["bio"],
-                new_user["username"],
-                new_user["password"],
-                new_user["profile_image_url"],
-                new_user["created_on"],
-                new_user["active"]
+                new_category["label"]
             ),
         )
 
         id = db_cursor.lastrowid
 
-        new_user["id"] = id
+        new_category["id"] = id
 
-    return json.dumps(new_user)
+    return json.dumps(new_category)
