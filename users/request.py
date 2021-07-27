@@ -1,5 +1,37 @@
 import sqlite3
 import json
+from models import Users
+
+def get_all_users():
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            u.id,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
+        FROM Users u
+        """)
+
+        users = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            user = Users(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+            users.append(user.__dict__)
+
+    return json.dumps(users)
+
 
 
 def create_user(new_user):
@@ -27,14 +59,9 @@ def create_user(new_user):
             ),
         )
 
-        # The `lastrowid` property on the cursor will return
-        # the primary key of the last thing that got added to
-        # the database.
         id = db_cursor.lastrowid
 
-        # Add the `id` property to the user dictionary that
-        # was sent by the client so that the client sees the
-        # primary key in the response.
         new_user["id"] = id
 
     return json.dumps(new_user)
+
