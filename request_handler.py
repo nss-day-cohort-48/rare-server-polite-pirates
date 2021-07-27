@@ -1,6 +1,8 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from users import get_all_users
+from users import get_all_users, create_user
+
+
 
 class HandleRequests(BaseHTTPRequestHandler):
     '''note that is needed'''
@@ -11,13 +13,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if "?" in resource:
 
-            param = resource.split("?")[1]  
-            resource = resource.split("?")[0]  
-            pair = param.split("=") 
-            key = pair[0]  
-            value = pair[1] 
+            param = resource.split("?")[1]
+            resource = resource.split("?")[0]
+            pair = param.split("=")
+            key = pair[0]
+            value = pair[1]
 
-            return ( resource, key, value )
+            return (resource, key, value)
 
         else:
             id = None
@@ -25,9 +27,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             try:
                 id = int(path_params[2])
             except IndexError:
-                pass  
+                pass
             except ValueError:
-                pass  
+                pass
 
             return (resource, id)
 
@@ -56,15 +58,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if len(parsed) == 2:
             ( resource, id ) = parsed
-            if resource == "madeUpList":
-                if id is not None:
             
-                    response = f"{get_made_up_function_single(id)}"
-                else:
-                    response = f"{get_made_up_function_all()}"
-            elif resource == "users":
-                if:
-                    response = f"{get_all_users()}"
+            if resource == "users":
+                response = f"{get_all_users()}"
 
         # elif len(parsed) == 3:
         #     ( resource, key, value ) = parsed
@@ -75,7 +71,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         #     elif key == "madeUpListEmail2" and resource == "madeUpList":
         #         response = get_made_up_function(value)
 
-        # self.wfile.write(response.encode())
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         '''Post method'''
@@ -89,12 +85,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         new_item = None
 
-        # if resource_from_url == "madeUpList":
-        #     new_item = create_made_up_function(post_body)
+        if resource_from_url == "register":
+            new_item = create_user(post_body)
 
         # elif resource_from_url == "madeUpList2":
         #     new_item = create_made_up_function(post_body)
-        # self.wfile.write(f"{new_item}".encode())
+        self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
         '''Delete method'''
@@ -109,7 +105,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         #     delete_made_up_function2(id)
 
         self.wfile.write("".encode())
-
 
     def do_PUT(self):
         content_len = int(self.headers.get('content-length', 0))
