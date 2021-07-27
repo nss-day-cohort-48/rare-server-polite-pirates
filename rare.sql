@@ -79,3 +79,5 @@ INSERT INTO Tags ('label')
 VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url')
 VALUES ('happy', 'https://pngtree.com/so/happy');
+
+INSERT INTO `Posts` VALUES (null, 1, 1, "The best post ever", "27/7/2021", "empty for now", "this is a sample posts", 0);
