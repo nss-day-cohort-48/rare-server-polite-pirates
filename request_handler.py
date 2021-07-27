@@ -1,5 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from posts.request import get_all_posts
 
 class HandleRequests(BaseHTTPRequestHandler):
     '''note that is needed'''
@@ -55,12 +56,11 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if len(parsed) == 2:
             ( resource, id ) = parsed
-            # if resource == "madeUpList":
-            #     if id is not None:
-            #
-            #         response = f"{get_made_up_function_single(id)}"
-            #     else:
-            #         response = f"{get_made_up_function_all()}"
+            if resource == "posts":
+                if id is not None:
+                    response = f"{get_made_up_function_single(id)}"
+                else:
+                    response = f"{get_all_posts()}"
             # elif resource == "customers":
             #     if id is not None:
             #         response = f"{get_made_up_function(id)}"
@@ -76,7 +76,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         #     elif key == "madeUpListEmail2" and resource == "madeUpList":
         #         response = get_made_up_function(value)
 
-        # self.wfile.write(response.encode())
+        self.wfile.write(response.encode())
 
     def do_POST(self):
         '''Post method'''
