@@ -20,7 +20,7 @@ def get_all_categories():
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            category = Categories(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+            category = Categories(row['id'], row['label'])
             categories.append(category.__dict__)
 
     return json.dumps(categories)

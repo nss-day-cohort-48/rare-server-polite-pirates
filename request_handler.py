@@ -2,6 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts.request import get_all_posts, delete_post
 from users import get_all_users, create_user
+from categories import get_all_categories, create_category, update_category, delete_category
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -65,6 +66,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_all_posts()}"
             if resource == "users":
                 response = f"{get_all_users()}"
+            if resource == "categories":
+                response = f"{get_all_categories()}"
 
         # elif len(parsed) == 3:
         #     ( resource, key, value ) = parsed
@@ -104,10 +107,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-
-        # elif resource == "madeUpList2":
-        #     delete_made_up_function2(id)
-
+        elif resource == "categories":
+            delete_category(id)
         self.wfile.write("".encode())
 
     def do_PUT(self):
@@ -119,8 +120,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         success = False
 
-        # if resource == "madeUpList":
-        #     success = update_made_up_function(id, post_body)
+        if resource == "categories":
+            success = update_category(id, post_body)
         # elif resource == "madeUpList2":
         #     success = update_made_up_function2(id, post_body)
 
