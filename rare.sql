@@ -81,3 +81,6 @@ INSERT INTO Reactions ('label', 'image_url')
 VALUES ('happy', 'https://pngtree.com/so/happy');
 
 INSERT INTO `Users` VALUES (null, "Hannah", "Hall", "www.sdsd.com", "Interesting Bio Stuff", "hannahHall", "password", "https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512", 07-27-2021, TRUE)
+
+SELECT *
+FROM `Users`;
