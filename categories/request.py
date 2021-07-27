@@ -62,24 +62,6 @@ def delete_category(id):
 
 
 # edit
-def update_category(id_of_category, new_category_dict):
-    """
-        [summary]
-        Args:
-            id_of_category ([type]): [description]
-            new_category_dict ([type]): [description]
-    """
-
-    for index, category in enumerate(CATEGORIES):
-        # iterating the list
-        if category['id'] == id_of_category:
-            # when we find the correct category (id matches arg)
-            # reassign value of item at current index to equal
-            # new category dict arg
-            CATEGORIES[index] = new_category_dict
-            break
-        
-
 def update_category(id, new_category):
     """Edit an category by Id"""
     with sqlite3.connect("./rare.db") as conn:
