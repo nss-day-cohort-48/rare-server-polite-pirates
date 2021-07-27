@@ -1,5 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from users import get_all_users
 
 class HandleRequests(BaseHTTPRequestHandler):
     '''note that is needed'''
@@ -55,17 +56,15 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if len(parsed) == 2:
             ( resource, id ) = parsed
-            # if resource == "madeUpList":
-            #     if id is not None:
-            #
-            #         response = f"{get_made_up_function_single(id)}"
-            #     else:
-            #         response = f"{get_made_up_function_all()}"
-            # elif resource == "customers":
-            #     if id is not None:
-            #         response = f"{get_made_up_function(id)}"
-            #     else:
-            #         response = f"{get_made_up_function()}"
+            if resource == "madeUpList":
+                if id is not None:
+            
+                    response = f"{get_made_up_function_single(id)}"
+                else:
+                    response = f"{get_made_up_function_all()}"
+            elif resource == "users":
+                if:
+                    response = f"{get_all_users()}"
 
         # elif len(parsed) == 3:
         #     ( resource, key, value ) = parsed
