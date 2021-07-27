@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from posts.request import get_all_posts
+from posts.request import get_all_posts, create_post
 from users import get_all_users, create_user
 
 
@@ -92,8 +92,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource_from_url == "register":
             new_item = create_user(post_body)
 
-        # elif resource_from_url == "madeUpList2":
-        #     new_item = create_made_up_function(post_body)
+        elif resource_from_url == "posts":
+            new_item = create_post(post_body)
+
         self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
