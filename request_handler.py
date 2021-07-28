@@ -3,7 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts.request import get_all_posts, get_single_post, delete_post, create_post, update_post
 from users import get_all_users, create_user
 from categories import get_all_categories, create_category, update_category, delete_category
-from tags import get_all_tags, get_single_tag, create_tag
+from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -121,8 +121,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
+
         elif resource == "categories":
             delete_category(id)
+
+        elif resource == "tags":
+            delete_tag(id)
+
         self.wfile.write("".encode())
 
     def do_PUT(self):
