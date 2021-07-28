@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from posts.request import get_all_posts, delete_post, create_post
+from posts.request import get_all_posts, delete_post, create_post, update_post
 from users import get_all_users, create_user
 from categories import get_all_categories, create_category, update_category, delete_category
 
@@ -120,8 +120,11 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         success = False
 
+        if resource == "posts":
+            success = update_post(id, post_body)
         if resource == "categories":
             success = update_category(id, post_body)
+
         # elif resource == "madeUpList2":
         #     success = update_made_up_function2(id, post_body)
 
