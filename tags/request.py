@@ -42,3 +42,5 @@ def get_single_tag(id):
         tag = Tag(data['id'], data['label'])
 
         return json.dumps(tag.__dict__)
+
+# def create_tag(new_tag):
