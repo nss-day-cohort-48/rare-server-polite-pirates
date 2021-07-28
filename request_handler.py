@@ -2,6 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts.request import get_all_posts, delete_post, create_post, update_post
 from users import get_all_users, create_user
+from categories import get_all_categories, create_category, update_category, delete_category
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -57,7 +58,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         parsed = self.parse_url(self.path)
 
         if len(parsed) == 2:
-            ( resource, id ) = parsed
+            (resource, id) = parsed
             if resource == "posts":
                 if id is not None:
                     response = f"{get_made_up_function_single(id)}"
@@ -65,6 +66,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_all_posts()}"
             if resource == "users":
                 response = f"{get_all_users()}"
+            if resource == "categories":
+                response = f"{get_all_categories()}"
 
         # elif len(parsed) == 3:
         #     ( resource, key, value ) = parsed
@@ -91,10 +94,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource_from_url == "register":
             new_item = create_user(post_body)
-
-        elif resource_from_url == "posts":
-            new_item = create_post(post_body)
-
+        elif resource_from_url == "categories":
+            new_item = create_category(post_body)
+            
         self.wfile.write(f"{new_item}".encode())
 
     def do_DELETE(self):
@@ -105,10 +107,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-
-        # elif resource == "madeUpList2":
-        #     delete_made_up_function2(id)
-
+        elif resource == "categories":
+            delete_category(id)
         self.wfile.write("".encode())
 
     def do_PUT(self):
@@ -122,6 +122,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             success = update_post(id, post_body)
+        if resource == "categories":
+            success = update_category(id, post_body)
+
         # elif resource == "madeUpList2":
         #     success = update_made_up_function2(id, post_body)
 
