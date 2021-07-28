@@ -13,6 +13,7 @@ def get_all_categories():
             c.label
             
         FROM Categories c
+        ORDER BY c.label ASC
         """)
 
         categories = []
