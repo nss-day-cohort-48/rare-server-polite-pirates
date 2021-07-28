@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from posts.request import get_all_posts, delete_post, create_post, update_post
+from posts.request import get_all_posts, get_single_post, delete_post, create_post, update_post
 from users import get_all_users, create_user
 from categories import get_all_categories, create_category, update_category, delete_category
 
@@ -61,7 +61,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             (resource, id) = parsed
             if resource == "posts":
                 if id is not None:
-                    response = f"{get_made_up_function_single(id)}"
+                    response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
             if resource == "users":
