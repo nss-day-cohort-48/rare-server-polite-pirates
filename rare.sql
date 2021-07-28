@@ -85,7 +85,11 @@ INSERT INTO `Posts` VALUES (null, 1, 1, "The best post ever", "27/7/2021", "empt
 INSERT INTO `Users` VALUES (null, "me", "mylastname", "www.me@me.com", "Interesting Bio Stuff", "meme", "password", "https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512", 07-27-2021, TRUE)
 
 INSERT INTO `Users` VALUES (null, "Hannah", "Hall", "www.sdsd.com", "Interesting Bio Stuff", "hannahHall", "password", "https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512", 07-27-2021, TRUE);
+
 INSERT INTO `Categories` VALUES (null, "News");
+
+INSERT INTO `Tags` VALUES (null, "cool label");
+
 
 
 SELECT *
