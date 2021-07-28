@@ -3,7 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts.request import get_all_posts, get_single_post, delete_post, create_post, update_post
 from users import get_all_users, create_user
 from categories import get_all_categories, create_category, update_category, delete_category
-from tags import get_all_tags, get_single_tag
+from tags import get_all_tags, get_single_tag, create_tag
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -107,6 +107,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource_from_url == "categories":
             new_item = create_category(post_body)
+
+        elif resource_from_url == "tags":
+            new_item = create_tag(post_body)
             
         self.wfile.write(f"{new_item}".encode())
 
