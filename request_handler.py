@@ -111,7 +111,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif resource_from_url == "tags":
             new_item = create_tag(post_body)
 
-        # elif resource_from_url == "login":
+        # elif resource_from_url == "users":
         #     new_item =
             
         self.wfile.write(f"{new_item}".encode())
