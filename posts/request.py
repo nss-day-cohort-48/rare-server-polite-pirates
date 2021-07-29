@@ -83,6 +83,18 @@ def create_post(new_post):
 
         new_post['id'] = id
 
+        # new_animal['customers']: the client should pass a list of customer_id's
+        # to be associated with this animal
+        for customer_id in new_animal['customers']:
+            # When interating (looping) through the list we can insert the customer_id
+            # and new_animal['id'] into the CustomerAnimal table to set up the
+            # many to many relationship
+            db_cursor.execute("""
+            INSERT INTO CustomerAnimal
+                (customer_id, animal_id)
+            VALUES (?, ?)
+            """, (customer_id, new_animal['id']))
+
     return json.dumps(new_post)
 
 

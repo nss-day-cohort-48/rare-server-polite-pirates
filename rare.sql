@@ -90,10 +90,12 @@ INSERT INTO `Categories` VALUES (null, "News");
 
 INSERT INTO `Tags` VALUES (null, "cool label");
 
+INSERT INTO `PostTags` VALUES (null, 1, 1);
+
 
 
 SELECT *
-FROM `Users`;
+FROM `Tags`;
 
 SELECT
     p.id,
@@ -114,9 +116,9 @@ JOIN Categories c
     ON c.id = p.category_id
 
 SELECT
-     t.id,
-     t.label
- FROM Tags t
- JOIN PostTags pt ON t.id = pt.tag_id
- JOIN Posts p ON p.id = pt.post_id
- WHERE t.id = 1;
+    t.id,
+    t.label
+FROM Tags t
+JOIN PostTags pt ON t.id = pt.tag_id
+JOIN Posts p ON p.id = pt.post_id
+WHERE p.id = 1;
