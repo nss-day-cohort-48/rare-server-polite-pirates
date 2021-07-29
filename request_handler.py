@@ -1,3 +1,4 @@
+from comments.request import create_comment, get_all_comments
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts.request import get_all_posts, get_single_post, delete_post, create_post, update_post
@@ -68,6 +69,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             elif resource == "users":
                 response = f"{get_all_users()}"
+            
+            elif resource == "comments":
+                response = f"{get_all_comments()}"
 
             elif resource == "categories":
                 response = f"{get_all_categories()}"
@@ -113,6 +117,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource_from_url == "posts":
             new_item = create_post(post_body)
+        
+        elif resource_from_url == "comments":
+            new_item = create_comment(post_body)
             
         self.wfile.write(f"{new_item}".encode())
 
