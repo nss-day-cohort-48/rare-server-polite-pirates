@@ -32,7 +32,7 @@ def get_all_comments():
             c.id,
             c.post_id,
             c.author_id,
-            c.content
+            c.content,
             c.created_on
         FROM Comments c
         """)
