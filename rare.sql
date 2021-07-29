@@ -103,7 +103,7 @@ INSERT INTO `Comments` VALUES (null, 1, 1, "This is a comment", 1627582649113);
 DROP TABLE `Comments`;
 
 SELECT *
-FROM `Tags`;
+FROM `PostTags`;
 
 SELECT
     p.id,

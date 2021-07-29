@@ -47,16 +47,37 @@ def get_all_posts():
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'],
                         row['image_url'], row['content'], row['approved'])
 
-            user = Users(row['user_id'], row['user_first_name'], row['user_last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
-            
+            user = Users(row['user_id'], row['user_first_name'], row['user_last_name'], row['email'], row['bio'],
+                        row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+
             category = Categories(row['category_id'], row['category_label'])
 
-            post.user_display_name = {"user_name":row["username"]}
+            post.user_display_name = {"user_name": row["username"]}
 
             post.user = user.__dict__
             post.category = category.__dict__
-
             posts.append(post.__dict__)
+        # TAGS JOIN TABLE
+        db_cursor.execute("""
+                SELECT
+                    t.id,
+                    t.name
+                FROM Tags t
+                JOIN PostTags pt ON t.id = pt.tags_id
+                JOIN Posts p ON p.id = pt.posts_id
+                WHERE p.id = ?
+            """, (posts.id, ))
+        tags_rows = db_cursor.fetchall()
+            # Loop through the tags_rows to create a dictionary for each tags
+            # then append the tags to the tags list in Posts
+        for tags_row in tags_rows:
+                tags = {
+                    'id': tags_row['id'],
+                    'label': tags_row['label']
+                }
+                posts.tags.append(tags)
+
+        
 
         return json.dumps(posts)
 
@@ -85,7 +106,7 @@ def get_single_post(id):
         post = Post(data['id'], data['user_id'], data['category_id'], data['title'],
                     data['publication_date'], data['image_url'], data['content'], data['approved'])
 
-        return json.dumps(post.__dict__)
+    return json.dumps(post.__dict__)
 
 
 def create_post(new_post):
