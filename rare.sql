@@ -90,6 +90,7 @@ INSERT INTO `Categories` VALUES (null, "News");
 
 INSERT INTO `Tags` VALUES (null, "cool label");
 
+INSERT INTO `Comments` VALUES (null, 1, 1, "This is a comment");
 
 
 SELECT *
