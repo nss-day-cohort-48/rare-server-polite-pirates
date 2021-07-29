@@ -114,6 +114,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource_from_url == "tags":
             new_item = create_tag(post_body)
+
+        elif resource_from_url == "posts":
+            new_item = create_post(post_body)
         
         elif resource_from_url == "comments":
             new_item = create_comment(post_body)
