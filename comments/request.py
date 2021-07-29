@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import comment
+from models import Comment
 
 
 def create_comment(new_comment):
@@ -30,10 +30,10 @@ def get_all_comments():
         db_cursor.execute("""
         SELECT
             c.id,
-            c.post_id
-            c.author_id
+            c.post_id,
+            c.author_id,
             c.content
-            
+            c.created_on
         FROM Comments c
         """)
 
@@ -42,7 +42,7 @@ def get_all_comments():
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            comment = comments(row['id'], row['post_id'], row['author_id'], row['content'],)
+            comment = Comment(row['id'], row['post_id'], row['author_id'], row['content'], row['created_on'])
             comments.append(comment.__dict__)
 
     return json.dumps(comments)
