@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts.request import get_all_posts, get_single_post, delete_post, create_post, update_post
 from users import get_all_users, create_user
 from categories import get_all_categories, create_category, update_category, delete_category
+from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -64,10 +65,19 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
-            if resource == "users":
+
+            elif resource == "users":
                 response = f"{get_all_users()}"
-            if resource == "categories":
+
+            elif resource == "categories":
                 response = f"{get_all_categories()}"
+            
+            elif resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
+            
 
         # elif len(parsed) == 3:
         #     ( resource, key, value ) = parsed
@@ -94,8 +104,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource_from_url == "register":
             new_item = create_user(post_body)
+
         elif resource_from_url == "categories":
             new_item = create_category(post_body)
+
+        elif resource_from_url == "tags":
+            new_item = create_tag(post_body)
             
         self.wfile.write(f"{new_item}".encode())
 
@@ -107,8 +121,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
+
         elif resource == "categories":
             delete_category(id)
+
+        elif resource == "tags":
+            delete_tag(id)
+
         self.wfile.write("".encode())
 
     def do_PUT(self):
