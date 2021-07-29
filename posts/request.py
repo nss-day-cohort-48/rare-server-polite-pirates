@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Post
+from models import Post, Users, Categories
 
 
 def get_all_posts():
@@ -19,8 +19,17 @@ def get_all_posts():
             p.image_url,
             p.content,
             p.approved,
+            u.id user_id,
             u.first_name user_first_name,
             u.last_name user_last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            c.id category_id,
             c.label category_label
         FROM Posts p
         JOIN Users u
@@ -37,6 +46,15 @@ def get_all_posts():
 
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'],
                         row['image_url'], row['content'], row['approved'])
+
+            user = Users(row['user_id'], row['user_first_name'], row['user_last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+            
+            category = Categories(row['category_id'], row['category_label'])
+
+            post.user_display_name = {"user_name":row["username"]}
+
+            post.user = user.__dict__
+            post.category = category.__dict__
 
             posts.append(post.__dict__)
 
