@@ -33,14 +33,29 @@ def get_all_posts():
 
         dataset = db_cursor.fetchall()
 
-        for row in dataset:
-
-            post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'],
-                        row['image_url'], row['content'], row['approved'])
-
-            posts.append(post.__dict__)
+        # Get the owners of the animal by following the relationship from customers to animal
+        # through the join table
+        db_cursor.execute("""
+                 Select
+                     c.id,
+                     c.name
+                 From Customer c
+                 Join CustomerAnimal ca on c.id = ca.customer_id
+                 Join Animal a on a.id = ca.animal_id
+                 where a.id = ?
+             """, (animal.id, ))
+        customer_rows = db_cursor.fetchall()
+        # Loop through the customer_rows to create a dictionary for each customer
+        # then append the customer to the customers list in animal
+        for customer_row in customer_rows:
+            customer = {
+                'id': customer_row['id'],
+                'name': customer_row['name']
+            }
+            animal.customers.append(customer)
 
         return json.dumps(posts)
+
 
 def get_single_post(id):
     with sqlite3.connect("./rare.db") as conn:
@@ -59,13 +74,15 @@ def get_single_post(id):
             p.approved
         FROM posts p
         WHERE p.id = ?
-        """, ( id, ))
+        """, (id, ))
 
         data = db_cursor.fetchone()
 
-        post = Post(data['id'], data['user_id'], data['category_id'], data['title'], data['publication_date'], data['image_url'], data['content'], data['approved'])
+        post = Post(data['id'], data['user_id'], data['category_id'], data['title'],
+                    data['publication_date'], data['image_url'], data['content'], data['approved'])
 
         return json.dumps(post.__dict__)
+
 
 def create_post(new_post):
 
@@ -83,17 +100,17 @@ def create_post(new_post):
 
         new_post['id'] = id
 
-        # new_animal['customers']: the client should pass a list of customer_id's
-        # to be associated with this animal
-        for customer_id in new_animal['customers']:
-            # When interating (looping) through the list we can insert the customer_id
-            # and new_animal['id'] into the CustomerAnimal table to set up the
+        # new_post['tags']: the client should pass a list of tag_id's
+        # to be associated with this post
+        for tag_id in new_post['tags']:
+            # When interating (looping) through the list we can insert the tag_id
+            # and new_post['id'] into the tagpost table to set up the
             # many to many relationship
             db_cursor.execute("""
-            INSERT INTO CustomerAnimal
-                (customer_id, animal_id)
+            INSERT INTO PostTags
+                (tag_id, post_id)
             VALUES (?, ?)
-            """, (customer_id, new_animal['id']))
+            """, (tag_id, new_post['id']))
 
     return json.dumps(new_post)
 
@@ -103,6 +120,7 @@ def delete_post(id):
         DELETE FROM posts
         WHERE id = ?
     """, (id, )
+
 
 def update_post(id, new_post):
     with sqlite3.connect("./rare.db") as conn:
@@ -121,7 +139,7 @@ def update_post(id, new_post):
         WHERE id = ?
         """, (new_post['user_id'], new_post['category_id'],
               new_post['title'], new_post['publication_date'],
-              new_post['image_url'], new_post['content'], new_post['approved'], id ))
+              new_post['image_url'], new_post['content'], new_post['approved'], id))
 
         rows_affected = db_cursor.rowcount
 

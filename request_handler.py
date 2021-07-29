@@ -110,6 +110,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         elif resource_from_url == "tags":
             new_item = create_tag(post_body)
+
             
         self.wfile.write(f"{new_item}".encode())
 
