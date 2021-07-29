@@ -95,3 +95,20 @@ INSERT INTO `Tags` VALUES (null, "cool label");
 SELECT *
 FROM `Users`;
 
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved,
+    u.first_name user_first_name,
+    u.last_name user_last_name,
+    c.label category_label
+FROM Posts p
+JOIN Users u
+    ON u.id = p.user_id
+JOIN Categories c
+    ON c.id = p.category_id
