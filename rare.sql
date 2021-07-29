@@ -81,7 +81,12 @@ VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url')
 VALUES ('happy', 'https://pngtree.com/so/happy');
 
-INSERT INTO `Posts` VALUES (null, 1, 1, "The best post ever", "27/7/2021", "empty for now", "this is a sample posts", 0);
+INSERT INTO `Posts` VALUES (null, 1, 1, "Oldest Post", 1627581763818, "empty for now", "this is a sample posts", 0);
+
+INSERT INTO `Posts` VALUES (null, 2, 2, "Newest Post", 1627581865735, "empty for now", "this is a sample posts", 0);
+
+INSERT INTO `Posts` VALUES (null, 2, 2, "Newester Post", 1627582049660, "empty for now", "this is a sample posts", 0);
+
 
 INSERT INTO `Users` VALUES (null, "me", "mylastname", "www.me@me.com", "Interesting Bio Stuff", "meme", "password", "https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512", 07-27-2021, TRUE)
 

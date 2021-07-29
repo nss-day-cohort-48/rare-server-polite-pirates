@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Post
+from models import Post, Users, Categories
 
 
 def get_all_posts():
@@ -19,8 +19,17 @@ def get_all_posts():
             p.image_url,
             p.content,
             p.approved,
+            u.id user_id,
             u.first_name user_first_name,
             u.last_name user_last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            c.id category_id,
             c.label category_label
         FROM Posts p
         JOIN Users u
@@ -33,26 +42,21 @@ def get_all_posts():
 
         dataset = db_cursor.fetchall()
 
-        # Get the owners of the animal by following the relationship from customers to animal
-        # through the join table
-        db_cursor.execute("""
-                 Select
-                     c.id,
-                     c.name
-                 From Customer c
-                 Join CustomerAnimal ca on c.id = ca.customer_id
-                 Join Animal a on a.id = ca.animal_id
-                 where a.id = ?
-             """, (animal.id, ))
-        customer_rows = db_cursor.fetchall()
-        # Loop through the customer_rows to create a dictionary for each customer
-        # then append the customer to the customers list in animal
-        for customer_row in customer_rows:
-            customer = {
-                'id': customer_row['id'],
-                'name': customer_row['name']
-            }
-            animal.customers.append(customer)
+        for row in dataset:
+
+            post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'],
+                        row['image_url'], row['content'], row['approved'])
+
+            user = Users(row['user_id'], row['user_first_name'], row['user_last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+            
+            category = Categories(row['category_id'], row['category_label'])
+
+            post.user_display_name = {"user_name":row["username"]}
+
+            post.user = user.__dict__
+            post.category = category.__dict__
+
+            posts.append(post.__dict__)
 
         return json.dumps(posts)
 
