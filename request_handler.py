@@ -2,7 +2,7 @@ from comments.request import create_comment, get_all_comments
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from posts.request import get_all_posts, get_single_post, delete_post, create_post, update_post
-from users import get_all_users, create_user
+from users import get_all_users, create_user, login_user
 from categories import get_all_categories, create_category, update_category, delete_category
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 
@@ -118,9 +118,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif resource_from_url == "comments":
             new_item = create_comment(post_body)
 
-
-        # elif resource_from_url == "users":
-        #     new_item =
+        elif resource_from_url == "login":
+            new_item = login_user(post_body)
             
         self.wfile.write(f"{new_item}".encode())
 
