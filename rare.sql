@@ -41,6 +41,7 @@ CREATE TABLE "Comments" (
     "post_id" INTEGER,
     "author_id" INTEGER,
     "content" varchar,
+    "created_on" date,
     FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
     FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
 );
@@ -93,6 +94,8 @@ INSERT INTO `Tags` VALUES (null, "cool label");
 INSERT INTO `PostTags` VALUES (null, 1, 1);
 
 
+INSERT INTO `Comments` VALUES (null, 1, 1, "This is a comment", 1627582649113);
+DROP TABLE `Comments`;
 
 SELECT *
 FROM `Tags`;
