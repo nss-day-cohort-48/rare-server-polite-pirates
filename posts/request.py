@@ -47,18 +47,40 @@ def get_all_posts():
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'],
                         row['image_url'], row['content'], row['approved'])
 
-            user = Users(row['user_id'], row['user_first_name'], row['user_last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
-            
+            user = Users(row['user_id'], row['user_first_name'], row['user_last_name'], row['email'], row['bio'],
+                        row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+
             category = Categories(row['category_id'], row['category_label'])
 
-            post.user_display_name = {"user_name":row["username"]}
+            post.user_display_name = {"user_name": row["username"]}
 
             post.user = user.__dict__
             post.category = category.__dict__
+            # TAGS JOIN TABLE
+            db_cursor.execute("""
+                    SELECT
+                        t.id,
+                        t.label
+                    FROM Tags t
+                    JOIN PostTags pt ON t.id = pt.tag_id
+                    JOIN Posts p ON p.id = pt.post_id
+                    WHERE p.id = ?
+                """, (post.id, ))
+            tags_rows = db_cursor.fetchall()
+                # Loop through the tags_rows to create a dictionary for each tags
+                # then append the tags to the tags list in Posts
+            for tags_row in tags_rows:
+                    tags = {
+                        'id': tags_row['id'],
+                        'label': tags_row['label']
+                    }
+                    post.tags.append(tags)
 
             posts.append(post.__dict__)
+            
 
         return json.dumps(posts)
+
 
 def get_single_post(id):
     with sqlite3.connect("./rare.db") as conn:
@@ -77,13 +99,15 @@ def get_single_post(id):
             p.approved
         FROM posts p
         WHERE p.id = ?
-        """, ( id, ))
+        """, (id, ))
 
         data = db_cursor.fetchone()
 
-        post = Post(data['id'], data['user_id'], data['category_id'], data['title'], data['publication_date'], data['image_url'], data['content'], data['approved'])
+        post = Post(data['id'], data['user_id'], data['category_id'], data['title'],
+                    data['publication_date'], data['image_url'], data['content'], data['approved'])
 
-        return json.dumps(post.__dict__)
+    return json.dumps(post.__dict__)
+
 
 def create_post(new_post):
 
@@ -101,6 +125,18 @@ def create_post(new_post):
 
         new_post['id'] = id
 
+        # new_post['tags']: the client should pass a list of tag_id's
+        # to be associated with this post
+        for tag_id in new_post['tags']:
+            # When interating (looping) through the list we can insert the tag_id
+            # and new_post['id'] into the tagpost table to set up the
+            # many to many relationship
+            db_cursor.execute("""
+            INSERT INTO PostTags
+                (tag_id, post_id)
+            VALUES (?, ?)
+            """, (tag_id, new_post['id']))
+
     return json.dumps(new_post)
 
 
@@ -109,6 +145,7 @@ def delete_post(id):
         DELETE FROM posts
         WHERE id = ?
     """, (id, )
+
 
 def update_post(id, new_post):
     with sqlite3.connect("./rare.db") as conn:
@@ -127,7 +164,7 @@ def update_post(id, new_post):
         WHERE id = ?
         """, (new_post['user_id'], new_post['category_id'],
               new_post['title'], new_post['publication_date'],
-              new_post['image_url'], new_post['content'], new_post['approved'], id ))
+              new_post['image_url'], new_post['content'], new_post['approved'], id))
 
         rows_affected = db_cursor.rowcount
 

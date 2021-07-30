@@ -96,8 +96,47 @@ INSERT INTO `Categories` VALUES (null, "News");
 
 INSERT INTO `Tags` VALUES (null, "cool label");
 
+INSERT INTO `PostTags` VALUES (null, 1, 1);
+INSERT INTO `PostTags` VALUES (null, 7, 2);
+
+
 INSERT INTO `Comments` VALUES (null, 1, 1, "This is a comment", 1627582649113);
 DROP TABLE `Comments`;
 
 SELECT *
-FROM `Users`;
+FROM `PostTags`;
+
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved,
+    u.first_name user_first_name,
+    u.last_name user_last_name,
+    c.label category_label
+FROM Posts p
+JOIN Users u
+    ON u.id = p.user_id
+JOIN Categories c
+    ON c.id = p.category_id
+
+SELECT
+    t.id,
+    t.label
+FROM Tags t
+JOIN PostTags pt ON t.id = pt.tag_id
+JOIN Posts p ON p.id = pt.post_id
+WHERE p.id = 1;
+
+
+SELECT
+    t.id,
+    t.label
+FROM Tags t
+JOIN PostTags pt ON t.id = pt.tag_id
+JOIN Posts p ON p.id = pt.post_id
+WHERE p.id = 1;
