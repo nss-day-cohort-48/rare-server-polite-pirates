@@ -65,3 +65,26 @@ def create_user(new_user):
 
     return json.dumps(new_user)
 
+def login_user(user):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            u.id,
+            u.email,
+            u.password
+        FROM users u
+        WHERE u.email = ?
+        AND u.password = ?
+        """, ( user["email"], user["password"]))
+
+        data = db_cursor.fetchone()
+
+        user = {
+           "token": data['id'], 
+           "valid": True
+        }
+
+        return json.dumps(user)
