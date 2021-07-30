@@ -87,6 +87,8 @@ INSERT INTO `Posts` VALUES (null, 2, 2, "Newest Post", 1627581865735, "empty for
 
 INSERT INTO `Posts` VALUES (null, 2, 2, "Newester Post", 1627582049660, "empty for now", "this is a sample posts", 0);
 
+INSERT INTO `Posts` VALUES (null, 28, 2, "My One Post", 1627582049660, "empty for now", "this is a sample posts", 0);
+
 
 INSERT INTO `Users` VALUES (null, "me", "mylastname", "www.me@me.com", "Interesting Bio Stuff", "meme", "password", "https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512", 07-27-2021, TRUE)
 
@@ -101,3 +103,31 @@ DROP TABLE `Comments`;
 
 SELECT *
 FROM `Users`;
+
+
+ SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            u.id,
+            u.first_name user_first_name,
+            u.last_name user_last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active,
+            c.id,
+            c.label
+        FROM Posts p
+        JOIN Users u
+            ON u.id = p.user_id
+        JOIN Categories c
+            ON c.id = p.category_id
