@@ -56,28 +56,28 @@ def get_all_posts():
 
             post.user = user.__dict__
             post.category = category.__dict__
-            posts.append(post.__dict__)
-        # TAGS JOIN TABLE
-        db_cursor.execute("""
-                SELECT
-                    t.id,
-                    t.name
-                FROM Tags t
-                JOIN PostTags pt ON t.id = pt.tags_id
-                JOIN Posts p ON p.id = pt.posts_id
-                WHERE p.id = ?
-            """, (posts.id, ))
-        tags_rows = db_cursor.fetchall()
-            # Loop through the tags_rows to create a dictionary for each tags
-            # then append the tags to the tags list in Posts
-        for tags_row in tags_rows:
-                tags = {
-                    'id': tags_row['id'],
-                    'label': tags_row['label']
-                }
-                posts.tags.append(tags)
+            # TAGS JOIN TABLE
+            db_cursor.execute("""
+                    SELECT
+                        t.id,
+                        t.label
+                    FROM Tags t
+                    JOIN PostTags pt ON t.id = pt.tag_id
+                    JOIN Posts p ON p.id = pt.post_id
+                    WHERE p.id = ?
+                """, (post.id, ))
+            tags_rows = db_cursor.fetchall()
+                # Loop through the tags_rows to create a dictionary for each tags
+                # then append the tags to the tags list in Posts
+            for tags_row in tags_rows:
+                    tags = {
+                        'id': tags_row['id'],
+                        'label': tags_row['label']
+                    }
+                    post.tags.append(tags)
 
-        
+            posts.append(post.__dict__)
+            
 
         return json.dumps(posts)
 
